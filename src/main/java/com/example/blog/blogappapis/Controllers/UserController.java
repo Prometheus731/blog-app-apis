@@ -3,9 +3,11 @@ package com.example.blog.blogappapis.Controllers;
 import com.example.blog.blogappapis.Payloads.ApiResponse;
 import com.example.blog.blogappapis.Payloads.UserDto;
 import com.example.blog.blogappapis.Services.Impl.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,13 +21,13 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/")
-    public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto){
+    public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto){
         UserDto createUSerDto= this.userService.createUser(userDto);
         return new ResponseEntity<>(createUSerDto, HttpStatus.CREATED);
     }
 
     @PutMapping("/{userid}")
-    public ResponseEntity<UserDto> updateUser(@RequestBody UserDto userDto,@PathVariable("userid") Integer uid){  //if we have given name in pathvariable as same as put mapping name then we can change the name for parameter to uid or anything
+    public ResponseEntity<UserDto> updateUser(@Valid @RequestBody UserDto userDto,@PathVariable("userid") Integer uid){  //if we have given name in pathvariable as same as put mapping name then we can change the name for parameter to uid or anything
         UserDto updatedUser=this.userService.updateUSer(userDto,uid);
         return ResponseEntity.ok(updatedUser);
     }

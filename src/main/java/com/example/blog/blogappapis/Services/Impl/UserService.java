@@ -4,6 +4,7 @@ import com.example.blog.blogappapis.Entities.User;
 import com.example.blog.blogappapis.Exceptions.ResourceNotFound;
 import com.example.blog.blogappapis.Payloads.UserDto;
 import com.example.blog.blogappapis.Repositories.UserRepo;
+import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,7 @@ public class UserService implements com.example.blog.blogappapis.Services.UserSe
     private ModelMapper modelMapper;
 
     @Override
-    public UserDto createUser(UserDto userDto) {
+    public UserDto createUser(@Valid UserDto userDto) {
 
         User user=this.dtoToUser(userDto);
         User savedUser=this.userRepo.save(user);
