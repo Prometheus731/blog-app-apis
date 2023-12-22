@@ -6,10 +6,12 @@ import com.example.blog.blogappapis.Payloads.CategoryDto;
 import com.example.blog.blogappapis.Repositories.CategoryRepo;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
 public class CategoryServiceImpl implements com.example.blog.blogappapis.Services.CategoryService {
 
     @Autowired
