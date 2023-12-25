@@ -1,5 +1,6 @@
 package com.example.blog.blogappapis.Controllers;
 
+import com.example.blog.blogappapis.Config.AppConstants;
 import com.example.blog.blogappapis.Entities.Post;
 import com.example.blog.blogappapis.Payloads.ApiResponse;
 import com.example.blog.blogappapis.Payloads.PostDto;
@@ -32,8 +33,8 @@ public class PostController {
 
     //get by user
     @GetMapping("/user/{userId}/posts")
-    public ResponseEntity<PostResponse> getPostsByUser(@RequestParam(value="pageNumber",defaultValue = "0",required = false) Integer pageNumber,
-                                                       @RequestParam(value="pageSize",defaultValue = "10",required = false) Integer pageSize,
+    public ResponseEntity<PostResponse> getPostsByUser(@RequestParam(value="pageNumber",defaultValue = AppConstants.PAGE_NUMBER,required = false) Integer pageNumber,
+                                                       @RequestParam(value="pageSize",defaultValue = AppConstants.PAGE_SIZE,required = false) Integer pageSize,
                                                        @PathVariable Integer userId){
         PostResponse postResponse=this.postService.getPostsByUser(pageNumber,pageSize,userId);
         return new ResponseEntity<PostResponse>(postResponse,HttpStatus.OK);
@@ -41,8 +42,8 @@ public class PostController {
 
     //get by category
     @GetMapping("/category/{categoryId}/posts")
-    public ResponseEntity<PostResponse> getPostsByCategory(@RequestParam(value="pageNumber",defaultValue = "0",required = false) Integer pageNumber,
-                                                            @RequestParam(value="pageSize",defaultValue = "10",required = false) Integer pageSize,
+    public ResponseEntity<PostResponse> getPostsByCategory(@RequestParam(value="pageNumber",defaultValue = AppConstants.PAGE_NUMBER,required = false) Integer pageNumber,
+                                                            @RequestParam(value="pageSize",defaultValue = AppConstants.PAGE_SIZE,required = false) Integer pageSize,
                                                             @PathVariable Integer categoryId){
         PostResponse postResponse=this.postService.getPostsByCategory(pageNumber,pageSize,categoryId);
         return new ResponseEntity<PostResponse>(postResponse,HttpStatus.OK);
@@ -50,10 +51,10 @@ public class PostController {
 
     //get all posts
     @GetMapping("/posts")
-    public ResponseEntity<PostResponse> getAllPosts(@RequestParam(value="pageNumber",defaultValue = "0",required = false) Integer pageNumber,
-                                                    @RequestParam(value="pageSize",defaultValue = "10",required = false) Integer pageSize,
-                                                    @RequestParam(value="sort",defaultValue = "postId",required = false) String sortBy,
-                                                    @RequestParam(value="sortDirection",defaultValue = "asc",required = false) String sortDirection){
+    public ResponseEntity<PostResponse> getAllPosts(@RequestParam(value="pageNumber",defaultValue = AppConstants.PAGE_NUMBER,required = false) Integer pageNumber,
+                                                    @RequestParam(value="pageSize",defaultValue = AppConstants.PAGE_SIZE,required = false) Integer pageSize,
+                                                    @RequestParam(value="sort",defaultValue = AppConstants.SORT_BY,required = false) String sortBy,
+                                                    @RequestParam(value="sortDirection",defaultValue = AppConstants.SORT_DIR,required = false) String sortDirection){
         PostResponse postResponse=this.postService.getAllPost(pageNumber,pageSize,sortBy,sortDirection);
         return new ResponseEntity<PostResponse>(postResponse,HttpStatus.OK);
     }
