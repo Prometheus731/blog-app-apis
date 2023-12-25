@@ -94,18 +94,37 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostDto> getPostsByCategory(Integer categoryId) {
+    public PostResponse getPostsByCategory(Integer pageNo,Integer pageSize,Integer categoryId) {
         Category category=this.categoryRepo.findById(categoryId).orElseThrow(()-> new ResourceNotFoundException("Category","category Id",categoryId));
-        List<Post> postList=this.postRepo.findByCategory(category);
-        return postList.stream().map((post) -> this.modelMapper.map(post, PostDto.class)).collect(Collectors.toList());
+        Pageable pageable=PageRequest.of(pageNo,pageSize);
+
+        Page<Post> pagePost=this.postRepo.findByCategory(pageable,category);
+        PostResponse postResponse=new PostResponse();
+
+        postResponse.setContent(pagePost.stream().map((post) -> this.modelMapper.map(post, PostDto.class)).collect(Collectors.toList()));
+        postResponse.setPageNumber(pagePost.getNumber());
+        postResponse.setPageSize(pagePost.getSize());
+        postResponse.setTotalElements(pagePost.getTotalElements());
+        postResponse.setTotalPages(pagePost.getTotalPages());
+        postResponse.setLastPage(pagePost.isLast());
+        return postResponse;
     }
 
     @Override
-    public List<PostDto> getPostsByUser(Integer userId) {
+    public PostResponse getPostsByUser(Integer pageNo,Integer pageSize,Integer userId) {
         User user=this.userRepo.findById(userId).orElseThrow(()-> new ResourceNotFoundException("User","userId",userId));
-        //System.out.println(user.toString());
-        List<Post> postList=this.postRepo.findByUser(user);
-        return postList.stream().map((post) -> this.modelMapper.map(post, PostDto.class)).collect(Collectors.toList());
+        Pageable pageable=PageRequest.of(pageNo,pageSize);
+
+        Page<Post> pagePost=this.postRepo.findByUser(pageable,user);
+        PostResponse postResponse=new PostResponse();
+
+        postResponse.setContent(pagePost.stream().map((post) -> this.modelMapper.map(post, PostDto.class)).collect(Collectors.toList()));
+        postResponse.setPageNumber(pagePost.getNumber());
+        postResponse.setPageSize(pagePost.getSize());
+        postResponse.setTotalElements(pagePost.getTotalElements());
+        postResponse.setTotalPages(pagePost.getTotalPages());
+        postResponse.setLastPage(pagePost.isLast());
+        return postResponse;
     }
 
     @Override
