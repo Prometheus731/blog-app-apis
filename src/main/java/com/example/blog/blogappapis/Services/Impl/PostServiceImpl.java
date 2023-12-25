@@ -5,12 +5,16 @@ import com.example.blog.blogappapis.Entities.Post;
 import com.example.blog.blogappapis.Entities.User;
 import com.example.blog.blogappapis.Exceptions.ResourceNotFoundException;
 import com.example.blog.blogappapis.Payloads.PostDto;
+import com.example.blog.blogappapis.Payloads.PostResponse;
 import com.example.blog.blogappapis.Repositories.CategoryRepo;
 import com.example.blog.blogappapis.Repositories.PostRepo;
 import com.example.blog.blogappapis.Repositories.UserRepo;
 import com.example.blog.blogappapis.Services.PostService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -66,9 +70,21 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostDto> getAllPost() {
-        List<Post> postList=this.postRepo.findAll();
-        return postList.stream().map((element) -> modelMapper.map(element, PostDto.class)).collect(Collectors.toList());
+    public PostResponse getAllPost(Integer pageNo, Integer pageSize) {
+
+        Pageable pageable = PageRequest.of(pageNo,pageSize);
+
+        Page<Post> pagePost=this.postRepo.findAll(pageable);
+
+        List<Post> postList=pagePost.getContent();
+        PostResponse postResponse=new PostResponse();
+        postResponse.setContent(postList.stream().map((element) -> modelMapper.map(element, PostDto.class)).collect(Collectors.toList()));
+        postResponse.setPageNumber(pagePost.getNumber());
+        postResponse.setPageSize(pagePost.getSize());
+        postResponse.setTotalElements(pagePost.getTotalElements());
+        postResponse.setTotalPages(pagePost.getTotalPages());
+        postResponse.setLastPage(pagePost.isLast());
+        return postResponse;
     }
 
     @Override

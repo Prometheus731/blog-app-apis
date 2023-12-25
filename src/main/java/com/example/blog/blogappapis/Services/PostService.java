@@ -2,6 +2,7 @@ package com.example.blog.blogappapis.Services;
 
 import com.example.blog.blogappapis.Entities.Post;
 import com.example.blog.blogappapis.Payloads.PostDto;
+import com.example.blog.blogappapis.Payloads.PostResponse;
 
 import java.util.List;
 
@@ -18,7 +19,7 @@ public interface PostService {
 
     //get all posts
 
-    List<PostDto> getAllPost();
+    PostResponse getAllPost(Integer pageNo, Integer pageSize);
 
     //get single post
     PostDto getPostById(Integer postId);
