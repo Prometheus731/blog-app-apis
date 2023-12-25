@@ -31,6 +31,6 @@ public interface PostService {
     PostResponse getPostsByUser(Integer pageNo,Integer pageSize,Integer userId);
 
     //search posts
-    List<Post> searchPosts(String keyWord);
+    List<PostDto> searchPosts(String keyWord);
 
 }
