@@ -19,6 +19,29 @@ spring:
       max-file-size: 10MB
       max-request-size: 10MB
 
+#  security:
+#    user:
+#      name: Anshu
+#      password: Anshu
+#      roles: ADMIN
+
+
 Project:
   Image: images/
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
+
+
+
+
+
+
+
+
+
+
 
