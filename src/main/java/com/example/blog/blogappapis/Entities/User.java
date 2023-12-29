@@ -30,7 +30,7 @@ public class User implements UserDetails {
    private String password;
    private String about;
 
-   @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+   @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
    private List<Post> postList=new ArrayList<>();
 
    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
