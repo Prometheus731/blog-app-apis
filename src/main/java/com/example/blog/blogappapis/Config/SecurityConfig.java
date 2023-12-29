@@ -1,7 +1,10 @@
 package com.example.blog.blogappapis.Config;
 
 import com.example.blog.blogappapis.Security.CustomUserDetailService;
+import com.example.blog.blogappapis.Security.JWTAuthenticationFilter;
+import com.example.blog.blogappapis.Security.JwtAuthenticationEntryPoint;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.metamodel.model.domain.ManagedDomainType;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -19,9 +22,11 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Slf4j
 @Configuration
@@ -34,17 +39,28 @@ public class SecurityConfig {
     @Autowired
     private PasswordEncoderConfig passwordEncoderConfig;
 
+    @Autowired
+    private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+
+    @Autowired
+    private JWTAuthenticationFilter jwtAuthenticationFilter;
+
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers(HttpMethod.GET,"/api/posts/posts")
-                .authenticated()
-                .anyRequest()
+                .requestMatchers("/api/v1/auth/login")
                 .permitAll()
+                .anyRequest()
+                .authenticated()
                 .and()
-                        .httpBasic();
+                .exceptionHandling().authenticationEntryPoint(this.jwtAuthenticationEntryPoint)
+                .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+        http.addFilterBefore(this.jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         log.info("Anshu SecurityFilter chain is created: "+http);
         http.authenticationProvider(daoAuthenticationProvider());
