@@ -2,7 +2,9 @@ package com.example.blog.blogappapis.Controllers;
 
 import com.example.blog.blogappapis.Payloads.JWTAuthRequest;
 import com.example.blog.blogappapis.Payloads.JWTAuthResponse;
+import com.example.blog.blogappapis.Payloads.UserDto;
 import com.example.blog.blogappapis.Security.JwtTokenHelper;
+import com.example.blog.blogappapis.Services.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,6 +30,9 @@ public class AuthController {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private JwtTokenHelper jwtTokenHelper;
@@ -55,6 +60,18 @@ public class AuthController {
             log.info("Invalid details !!");
             throw new Exception("Invalid Username or password");
         }
+    }
+
+    //register new user API
+
+    @PostMapping("/register")
+    public ResponseEntity<UserDto> registerUser(@RequestBody UserDto userDto){
+        UserDto registeredUser=this.userService.registerNewUser(userDto);
+
+        return new ResponseEntity<UserDto>(registeredUser,HttpStatus.CREATED);
+
+
+
     }
 }
 

@@ -1,11 +1,15 @@
 package com.example.blog.blogappapis.Payloads;
 
+import com.example.blog.blogappapis.Entities.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.HashSet;
+import java.util.Set;
 
 
 //Data transfer object (DTO) (we will not be accessing the entity class directly, we will be using DTO class for this.)
@@ -31,4 +35,6 @@ public class UserDto {
 
     @NotEmpty
     private String about;
+
+    private Set<RoleDto> roleset=new HashSet<>();
 }
