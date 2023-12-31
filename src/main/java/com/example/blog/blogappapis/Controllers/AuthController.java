@@ -5,6 +5,9 @@ import com.example.blog.blogappapis.Payloads.JWTAuthResponse;
 import com.example.blog.blogappapis.Payloads.UserDto;
 import com.example.blog.blogappapis.Security.JwtTokenHelper;
 import com.example.blog.blogappapis.Services.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequestMapping("/api/v1/auth")
+@Tag(name="Authentication")
 public class AuthController {
 
     @Autowired
@@ -38,6 +42,20 @@ public class AuthController {
     private JwtTokenHelper jwtTokenHelper;
 
     @PostMapping("/login")
+    @Operation(
+            description = "To login in application ",
+            summary="To login in blog application using JWT token",
+            responses = {
+                    @ApiResponse(
+                            description = "Success",
+                            responseCode = "200"
+                    ),
+                    @ApiResponse(
+                            description = "Unauthorized/Invalid token",
+                            responseCode = "403"
+                    )
+            }
+    )
     public ResponseEntity<JWTAuthResponse> createToken(@RequestBody JWTAuthRequest request) throws Exception {
         log.info("JWTAuthRequest: "+request.getUsername()+" "+request.getPassword());
         this.authenticate(request.getUsername(),request.getPassword());

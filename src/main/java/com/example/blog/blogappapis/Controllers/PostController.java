@@ -7,6 +7,7 @@ import com.example.blog.blogappapis.Payloads.PostDto;
 import com.example.blog.blogappapis.Payloads.PostResponse;
 import com.example.blog.blogappapis.Services.FileService;
 import com.example.blog.blogappapis.Services.PostService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,6 +26,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/posts")
+@Tag(name="Post")
 public class PostController {
 
     @Autowired

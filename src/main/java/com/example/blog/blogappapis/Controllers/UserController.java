@@ -3,6 +3,8 @@ package com.example.blog.blogappapis.Controllers;
 import com.example.blog.blogappapis.Payloads.ApiResponse;
 import com.example.blog.blogappapis.Payloads.UserDto;
 import com.example.blog.blogappapis.Services.Impl.UserServiceImpl;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
+@Tag(name="User")
 public class UserController {
 
     @Autowired
@@ -33,6 +36,7 @@ public class UserController {
 
     //Admin
     //delete user
+    @SecurityRequirement(name = "bearerAuth")
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{userid}")
     public ResponseEntity<ApiResponse> deleteUser(@PathVariable("userid") Integer id){
