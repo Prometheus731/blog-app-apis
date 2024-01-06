@@ -4,6 +4,7 @@ import com.example.blog.blogappapis.Config.AppConstants;
 import com.example.blog.blogappapis.Config.PasswordEncoderConfig;
 import com.example.blog.blogappapis.Entities.Role;
 import com.example.blog.blogappapis.Repositories.RoleRepo;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -14,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 
+@Slf4j
 @SpringBootApplication
 public class BlogAppApisApplication implements CommandLineRunner {
 
@@ -38,15 +40,19 @@ public class BlogAppApisApplication implements CommandLineRunner {
 
 		try {
 			Role role=new Role();
+			log.info("Role 1 is created "+role);
 			role.setId(AppConstants.ADMIN_USER);
 			role.setRoleName("ADMIN_USER");
 
 			Role role1=new Role();
+			log.info("role 2 is created"+role1);
 			role1.setId(AppConstants.NORMAL_USER);
 			role1.setRoleName("NORMAL_USER");
 
 			List<Role> roles = List.of(role, role1);
+			log.info("Role list is created "+roles);
 			List<Role> resultRole=this.roleRepo.saveAll(roles);
+			log.info("roles are saved");
 
 			resultRole.forEach(r-> System.out.println(r.getRoleName()));
 		} catch (Exception e) {
